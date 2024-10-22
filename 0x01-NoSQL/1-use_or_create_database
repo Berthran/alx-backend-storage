@@ -1,0 +1,2 @@
+// Create and use the my_db database
+use my_db; // creates the database if it doesn't exists
