@@ -1,7 +1,2 @@
 // Collection will be created if it doesn't exist
-let result = db.school.insertOne({ name: "Holberton school" })
-if (result.acknowledged) {
-print("WriteResult({ \"nInserted\" : 1 })");
-} else {
-print("WriteResult({ \"nInserted\" : 0 })");
-}
+db.school.insert({ name: "Holberton school" })
