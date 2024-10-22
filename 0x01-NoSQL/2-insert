@@ -1,7 +1,2 @@
 // Collection will be created if it doesn't exist
-db.createCollection("school");
-
-// Insert document to the collection
-db.school.insertOne({
-    name: "Holberton school"
-})
+db.school.insertOne({ name: "Holberton school" })
