@@ -26,8 +26,10 @@ class Cache:
         Takes a data and returns a string
         '''
         randKey: str = str(uuid.uuid4())
-        if data is not None:
+        try:
             self._redis.set(randKey, data)
+        except Exception as DataError:
+            pass
         return randKey
  
     def get(self, key: str, fn: Callable):
