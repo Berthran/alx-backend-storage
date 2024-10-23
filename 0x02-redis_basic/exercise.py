@@ -23,8 +23,8 @@ class Cache:
 
     def store(self, data: Union[str, bytes, int, float]) -> str:
         '''
-        takes a data and returns a string
+        Takes a data and returns a string
         '''
         randKey: str = str(uuid.uuid4())
         self._redis.set(randKey, data)
-        return (randKey)
+        return randKey
