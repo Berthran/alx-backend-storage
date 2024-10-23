@@ -6,7 +6,7 @@ A redis class
 
 import redis
 import uuid
-from typing import Union
+from typing import Union, Callable
 
 
 class Cache:
@@ -26,5 +26,12 @@ class Cache:
         Takes a data and returns a string
         '''
         randKey: str = str(uuid.uuid4())
-        self._redis.set(randKey, data)
+        if data is not None:
+            self._redis.set(randKey, data)
         return randKey
+ 
+    def get(self, key: str, fn: Callable):
+        '''
+        reads from Redis and recover original type
+        '''
+        pass
