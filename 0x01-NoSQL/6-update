@@ -1,0 +1,2 @@
+// adds new attribute to a document
+db.school.updateMany({"name" : "Holberton school"}, {"$push": {"address" : "972 Misson street"}})
