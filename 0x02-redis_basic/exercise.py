@@ -26,12 +26,9 @@ class Cache:
         Takes a data and returns a string
         '''
         randKey: str = str(uuid.uuid4())
-        try:
-            self._redis.set(randKey, data)
-        except Exception as DataError:
-            pass
+        self._redis.set(randKey, data)
         return randKey
- 
+
     def get(self, key: str, fn: Callable):
         '''
         reads from Redis and recover original type
