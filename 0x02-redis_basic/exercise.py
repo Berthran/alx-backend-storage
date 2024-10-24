@@ -84,3 +84,25 @@ class Cache:
         Gets a value from Redis and converts to an int
         '''
         return self.get(key, lambda value: int(value))
+
+
+def replay(func: Callable) -> None:
+    '''
+    Display the history of calls for a given method
+    '''
+    r = redis.Redis()
+    func_name = func.__qualname__  # Get the function's qualified name
+    key_inputs = f"{func_name}:inputs"
+    key_outputs = f"{func_name}:outputs"
+
+    # Fetch inputs and outputs from Redis
+    inputs = r.lrange(key_inputs, 0, -1)  # Fetch all input entries
+    outputs = r.lrange(key_outputs, 0, -1)  # Fetch all output entries
+
+    # Display the call history
+    print(f"{func_name} was called {len(inputs)} times:")
+
+    # Use zip to pair inputs and outputs
+    for input_data, output_data in zip(inputs, outputs):
+        print(f"{func_name}(*{input_data.decode('utf-8')}) -> \
+                {output_data.decode('utf-8')}")
