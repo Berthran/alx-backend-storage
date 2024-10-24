@@ -45,7 +45,7 @@ class Cache:
             return randKey
         return randKey
 
-    def get(self, key: str, fn):
+    def get(self, key: str, fn=None):
         '''
         reads from Redis and recover original type
         '''
