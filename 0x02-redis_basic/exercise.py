@@ -12,7 +12,7 @@ from functools import wraps
 
 def count_calls(method: Callable) -> Callable:
     @wraps(method)
-    def wrapper_incr(self, *args, **kwargs):
+    def wrapper_incr(self, *args, **kwargs) -> Any:
         '''
         increments count for the key
         '''
@@ -20,6 +20,21 @@ def count_calls(method: Callable) -> Callable:
         self._redis.incr(key)
         return method(self, *args, **kwargs)
     return wrapper_incr
+
+
+def call_history(method: Callable) -> Callable:
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        '''
+        store history of inputs and outputs for a particular function
+        '''
+        key_inputs = f"{method.__qualname__}:inputs"
+        key_outputs = f"{method.__qualname__}:outputs"
+        self._redis.rpush(key_inputs, str(args))
+        output = method(self, *args, **kwargs)
+        self._redis.rpush(key_outputs, output)
+        return output
+    return wrapper
 
 
 class Cache:
@@ -35,6 +50,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         '''
         Takes a data and returns a string
